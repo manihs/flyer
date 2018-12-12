@@ -19,18 +19,7 @@ class signupTwoController extends Controller
 
     public function index()
     {    
-
-        $user = Auth::user();
-
-        $listdata = DB::table('activity_lists')
-        ->join('sub_interests', 'activity_lists.did', '=', 'sub_interests.main')
-        ->select('sub_interests.sub', 'activity_lists.did', 'sub_interests.did')
-        ->get();
-         
-        $userinterest = DB::table('user_interests')->where('uid','=', $user->id)->get()->pluck('icode');
-            
-        $userinterest = $userinterest->toArray();
-        return view('interestform', compact('listdata','userinterest'));
+        return view('interestform');
     }
 
     public function fetch(Request $request)
