@@ -19,7 +19,7 @@ class signupTwoController extends Controller
 
     public function index()
     {    
-        return view('interestform');
+        return view('Interestform');
     }
 
     public function fetch(Request $request)
