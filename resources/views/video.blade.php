@@ -27,6 +27,12 @@
                         <label for="exampleInputText">name of community</label>
                         {{ Form::text('name', 'community name',['id'=>'exampleInputText','class'=>'form-control'])}}
                     </div>
+                    @foreach ($community as $communities)
+                        <div class="form-group form-check">
+                        {{ Form::checkbox( 'community[]', $communities->did, false,['class'=>'form-check-input','id'=> $communities->did]) }} 
+                            <label class="form-check-label" for="{{ $communities->did }}">{{ $communities->community }}</label>
+                        </div>
+                    @endforeach
                     {{ Form::submit('Post',['class'=>'btn btn-success']) }}
                     {!! Form::close() !!}
                 </div>

@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\{
     Post,
     PostManager,
-    Image
+    Image,
+    TargetPost
 };
 use Auth;
 use Redirect;
@@ -42,6 +43,7 @@ class ImageController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
+ 
         if (request()->hasFile('img')) {
             $user = Auth::user();
             $file = request()->file('img');
@@ -55,15 +57,19 @@ class ImageController extends Controller
 
                 $post = new Post;
                 $post->src = $path;
+                $post->type = 'IMG';
+                $post->uid = $user->id;
                 $post->caption = $input['name'];
-                $post->postId = $Image->id;
                 $post->save();
 
-                $postManager = new PostManager;
-                $postManager->postype = 'image';
-                $postManager->userId = $user->id;
-                $postManager->postId =  $post->id;
-                $postManager->save();
+                $temp = $post->id;
+
+                foreach ($input['community'] as $value) {
+                    $TargetPost = new TargetPost;
+                    $TargetPost->postMangerId = $temp;
+                    $TargetPost->cmtyId = $value;
+                    $TargetPost->save();
+                }
 
             }
         }

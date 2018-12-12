@@ -7,7 +7,11 @@ use Illuminate\{
     Support\Facades\DB
 };
 
-use App\Community;
+use App\{
+    Community,
+    userCommunity
+};
+use Auth;
 
 class CommunityController extends Controller
 {
@@ -38,6 +42,13 @@ class CommunityController extends Controller
                 $Community->subc = $input['scategory'];
                 $Community->url = '/upload/demo.jpg';
                 $Community->save();
+
+                $user = Auth::user();
+                dd($user);
+                $UserInterest = new userCommunity;
+                $UserInterest->user = $user->id;
+                $UserInterest->community = $Community->id;
+                $UserInterest->save();
             }
         }
         return 'creating community';

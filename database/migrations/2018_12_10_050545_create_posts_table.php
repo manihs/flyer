@@ -17,7 +17,8 @@ class CreatePostsTable extends Migration
             $table->increments('id');
             $table->string('src');
             $table->string('caption');
-            $table->biginteger('postId');
+            $table->string('type');
+            $table->biginteger('uid');
             $table->timestamps();
         });
     }

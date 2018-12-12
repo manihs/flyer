@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\{
     Post,
     PostManager,
-    Video
+    Video,
+    TargetPost
 };
 use Auth;
 use Redirect;
@@ -40,7 +41,7 @@ class VideoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
         $user = Auth::user();
         $path = './users/'.$user->id.'/'.''.'video/'.time();
         $input = $request->all();
@@ -55,18 +56,24 @@ class VideoController extends Controller
                 
                 $post = new Post;
                 $post->src = $path;
+                $post->type = 'VID';
+                $post->uid = $user->id;
                 $post->caption = $input['name'];
-                $post->postId = $Video->id;
                 $post->save();
 
-                $postManager = new PostManager;
-                $postManager->postype = 'video';
-                $postManager->userId = $user->id;
-                $postManager->postId =  $post->id;
-                $postManager->save();
+                $temp = $post->id;
+
+                if(isset($input['community'])){
+                    foreach ($input['community'] as $value) {
+                        $TargetPost = new TargetPost;
+                        $TargetPost->postMangerId = $temp;
+                        $TargetPost->cmtyId = $value;
+                        $TargetPost->save();
+                    }
+                }   
             }
         }
-        return redirect('/');
+        // return redirect('/');
     }
 
     /**

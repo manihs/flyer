@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\{
+    Http\Request,
+    Support\Facades\DB
+};
+use auth;
 
 class PageController extends Controller
 {
@@ -10,9 +14,25 @@ class PageController extends Controller
         return view('createcommunity');
     }
     function post_image_upload(){
-        return view('image');
+
+        $user = Auth::user();
+
+        $community = DB::table('user_communities')
+        ->select('user_communities.community','user_communities.did','communities.name')
+        ->join('communities', 'communities.id', '=', 'user_communities.community')
+        ->where('user','=', $user->id)->get();
+        return view('image', compact('community'));
+        
     }
     function post_video_upload(){
-        return view('video');
+
+        $user = Auth::user();
+        
+        $community = DB::table('user_communities')
+        ->select('user_communities.community','user_communities.did','communities.name')
+        ->join('communities', 'communities.id', '=', 'user_communities.community')
+        ->where('user','=', $user->id)->get();
+
+        return view('video', compact('community'));
     }
 }

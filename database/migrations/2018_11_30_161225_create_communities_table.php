@@ -15,9 +15,10 @@ class CreateCommunitiesTable extends Migration
     {
         Schema::create('communities', function (Blueprint $table) {
             $table->increments('id');
+            $table->biginteger('uid');
             $table->string('name');
-            $table->integer('category');
-            $table->integer('subc');
+            $table->biginteger('category');
+            $table->biginteger('subc');
             $table->string('url');
             $table->timestamps();
         });
